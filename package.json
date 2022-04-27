@@ -1,0 +1,31 @@
+{
+	"name": "cosmostreamer",
+	"version": "0.0.1",
+	"api_version": "1.0.0",
+	"description": "Cosmostreamer module",
+	"keywords": [
+		"Cosmostreamer",
+		"DJI",
+		"Pocket Osmo",
+		"Pocket2",
+		"Osmo",
+		"Ronin",
+		"Wiral"
+	],
+	"manufacturer": "Cosmostreamer",
+	"product": "Cosmostreamer",
+	"shortname": "cosmostreamer",
+	"homepage": "https://github.com/bitfocus/companion-module-cosmostreamer-cosmostreamer",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bitfocus/companion-module-cosmostreamer-cosmostreamer.git"
+	},
+	"author": "Sergey Gol <cosmostreamer@gmail.com>",
+	"contributors": [
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/bitfocus/companion-module-cosmostreamer-cosmostreamer/issues"
+	}
+}
