@@ -346,6 +346,18 @@ exports.parseCameraTextTelemetry = function(self, app_type, name, value) {
 			}
 		}
 		break;
+
+		case APP_TYPE.APP_CS_DJI_RAVEN_EYE:
+		{
+			if (name == "rec_time") { 
+				if (self.feedbackVars.cameraStatus.rec_active) {
+					self.setVariable('camera_rec_time', value);
+				} else {
+					self.setVariable('camera_rec_time', '');
+				}
+			}
+		}
+		break;
 	}
 }
 
@@ -386,6 +398,29 @@ exports.parseCameraBinaryTelemetry = function(self, app_type, data) {
 		}
 		break;
 
+		case APP_TYPE.APP_CS_DJI_RAVEN_EYE:
+		{
+			if (data[1] == T_TYPE.BINARY_TELEMETRY1) {
+				let mode = data[12];
+				let pan = Int16(data[3] + (data[4] << 8)) / 10.0;
+				let tilt = Int16(data[5] + (data[6] << 8)) / 10.0;
+				let roll = Int16(data[7] + (data[8] << 8)) / 10.0;
+				let rec_state = data[14];
+
+				self.feedbackVars.cameraStatus.gimbal_mode = mode + 1;
+				self.feedbackVars.cameraStatus.rec_active = rec_state == 1;
+
+				self.setVariable('gimbal_pan', pan.toFixed(1));
+				self.setVariable('gimbal_tilt', tilt.toFixed(1));
+				self.setVariable('gimbal_roll', roll.toFixed(1));
+
+				self.checkFeedbacks('camera_rec_active');
+				self.checkFeedbacks('gimbal_mode_1');
+				self.checkFeedbacks('gimbal_mode_2');
+				self.checkFeedbacks('gimbal_mode_3');
+			}
+		}
+		break;
 	}
 }
 
