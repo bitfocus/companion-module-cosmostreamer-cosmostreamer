@@ -1,318 +1,610 @@
-exports.getFeedbacks  = function() {
+const { combineRgb } = require('@companion-module/base')
 
-	let feedbacks = {}
+let feedbackList = {}
 
-	feedbacks['am_status'] = {
-		label: 'Change Button Color If Auto Movements is Active',
-		description: 'If active, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'Foreground color',
-				id: 'fg',
-				default: this.rgb(255,255,255)
+module.exports = async function (self) {
+
+	const ColorWhite = combineRgb(255, 255, 255);
+    const ColorRed = combineRgb(200, 0, 0);
+    const ColorGreen = combineRgb(0, 127, 0);
+
+	feedbackList = {
+
+		/*ChannelState: {
+			name: 'Example Feedback',
+			type: 'boolean',
+			label: 'Channel State',
+			defaultStyle: {
+				bgcolor: ColorRed,
+				color: ColorWhite,
 			},
-			{
-				type: 'colorpicker',
-				label: 'Background color',
-				id: 'bg',
-				default: this.rgb(255,0,0)
+			options: [
+				{
+					id: 'num',
+					type: 'number',
+					label: 'Test',
+					default: 5,
+					min: 0,
+					max: 10,
+				},
+			],
+			callback: (feedback) => {
+				console.log('Hello world!', feedback.options.num)
+				if (feedback.options.num > 5) {
+					return true
+				} else {
+					return false
+				}
 			},
-		]
-	};
+		},*/
 
 
-	feedbacks['orientation_lock'] = {
-		label: 'Change Button Color If Position Lock is Active',
-		description: 'If active, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'Foreground color',
-				id: 'fg',
-				default: this.rgb(255,255,255)
+		/*CameraMode: {
+			name: 'Camera mode feedback',
+			type: 'boolean',
+			label: 'Camera mode',
+			defaultStyle: {
+				bgcolor: ColorRed,
+				color: ColorWhite,
 			},
-			{
-				type: 'colorpicker',
-				label: 'Background color',
-				id: 'bg',
-				default: this.rgb(255,0,0)
+			callback: (feedback) => {
+				//console.log('Hello world!', module.exports.feedbackVars.stream_state_udp);
+				if (module.exports.feedbackVars.stream_state_udp) {
+					return true
+				} else {
+					return false
+				}
 			},
-		]
-	};
+		},*/
 
-
-	let gimbal_mode_feedback_common = {
-		label: 'Change Button Color If Gimbal Mode is XXX',
-		description: 'If yes, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'If True color',
-				id: 'true_bg',
-				default: this.rgb(0,0,255)
+		drone_in_flight: {
+			type: 'boolean', name: 'Drone flight state', label: 'Drone flight state',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.in_flight == 1 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False color',
-				id: 'false_bg',
-				default: this.rgb(0,0,0)
+		},
+
+		drone_in_landing: {
+			type: 'boolean', name: 'Drone landing state', label: 'Drone landing state',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.in_landing == 1 ? true : false;
 			},
-		]
-	};
+		},
 
-	feedbacks['gimbal_mode_1'] = {...gimbal_mode_feedback_common};
-	feedbacks['gimbal_mode_1'].label = 'Change Button Color If Gimbal Mode is 1';
-	feedbacks['gimbal_mode_2'] = {...gimbal_mode_feedback_common};
-	feedbacks['gimbal_mode_2'].label = 'Change Button Color If Gimbal Mode is 2';
-	feedbacks['gimbal_mode_3'] = {...gimbal_mode_feedback_common};
-	feedbacks['gimbal_mode_3'].label = 'Change Button Color If Gimbal Mode is 3';
-
-
-
-	feedbacks['wiral_tictac_active'] = {
-		label: 'Change Button Color If Wiral Lite Tic-Tac mode is Active',
-		description: 'If active, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'Foreground color',
-				id: 'fg',
-				default: this.rgb(255,255,255)
+		drone_in_rth: {
+			type: 'boolean', name: 'Drone RTH state', label: 'Drone RTH state',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.in_rth == 1 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'Background color',
-				id: 'bg',
-				default: this.rgb(255,0,0)
+		},
+
+		feedback_obstacle_camera_0: {
+			type: 'boolean', name: 'Drone obstacle cam OFF', label: 'Drone obstacle cam OFF',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.obstacle_cam_id == 0 ? true : false;
 			},
-		]
-	};
-
-	feedbacks['wiral_ready'] = {
-		label: 'Change Button Color If Wiral Lite is Ready',
-		description: 'If active, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'Active color',
-				id: 'ready_color',
-				default: this.rgb(0,255,0)
+		},
+		feedback_obstacle_camera_1: {
+			type: 'boolean', name: 'Drone obstacle cam forward', label: 'Drone obstacle cam forward',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.obstacle_cam_id == 1 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'Inactive color',
-				id: 'not_ready_color',
-				default: this.rgb(255,0,0)
+		},
+		feedback_obstacle_camera_2: {
+			type: 'boolean', name: 'Drone obstacle cam backward', label: 'Drone obstacle cam backward',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.obstacle_cam_id == 2 ? true : false;
 			},
-		]
-	};
-
-	feedbacks['wiral_moving_fwd'] = {
-		label: 'Change Button Text Color If Wiral Lite Moving Forward',
-		description: 'If yes, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'If True color',
-				id: 'true_color',
-				default: this.rgb(255,255,255)
+		},
+		feedback_obstacle_camera_3: {
+			type: 'boolean', name: 'Drone obstacle cam left', label: 'Drone obstacle cam left',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.obstacle_cam_id == 3 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False color',
-				id: 'false_color',
-				default: this.rgb(0,0,0)
+		},
+		feedback_obstacle_camera_4: {
+			type: 'boolean', name: 'Drone obstacle cam right', label: 'Drone obstacle cam right',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.obstacle_cam_id == 4 ? true : false;
 			},
-		]
-	};
-
-	feedbacks['wiral_moving_back'] = {
-		label: 'Change Button Text Color If Wiral Lite Moving Backward',
-		description: 'If yes, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'If True color',
-				id: 'true_color',
-				default: this.rgb(255,255,255)
+		},
+		feedback_obstacle_camera_5: {
+			type: 'boolean', name: 'Drone obstacle cam bottom', label: 'Drone obstacle cam bottom',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.obstacle_cam_id == 5 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False color',
-				id: 'false_color',
-				default: this.rgb(0,0,0)
+		},
+		feedback_obstacle_camera_6: {
+			type: 'boolean', name: 'Drone obstacle cam top', label: 'Drone obstacle cam top',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.obstacle_cam_id == 6 ? true : false;
 			},
-		]
-	};
-
-	feedbacks['wiral_battery_low'] = {
-		label: 'Change Button Text Color If Wiral Lite Battery Low',
-		description: 'If yes, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'If True color',
-				id: 'true_color',
-				default: this.rgb(255,0,0)
+		},
+		feedback_obstacle_camera_255: {
+			type: 'boolean', name: 'Drone obstacle cam Auto', label: 'Drone obstacle cam Auto',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.obstacle_cam_id == 255 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False color',
-				id: 'false_color',
-				default: this.rgb(0xff,0xff,0xff)
+		},
+
+
+		drone_control_app_enabled: {
+			type: 'boolean', name: 'Drone app control enabled', label: 'Drone app control enabled',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.app_control_enabled == 1 ? true : false;
 			},
-		]
-	};
-
-
-
-	let streams_feedback_common = {
-		label: 'Change Button If XXX stream is Active',
-		description: 'If yes, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'If True - this text color',
-				id: 'true_fg',
-				default: this.rgb(255,255,255)
+		},
+		drone_control_app_disabled: {
+			type: 'boolean', name: 'Drone app control disabled', label: 'Drone app control disabled',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.app_control_enabled == 0 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'If True - this background color',
-				id: 'true_bg',
-				default: this.rgb(0xFF,0x00, 0x00)
+		},
+
+
+		drone_wp_active	: {
+			type: 'boolean', name: 'Drone Mission Active', label: 'Drone Mission Active',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.wp_active == 1 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False - this text color',
-				id: 'false_fg',
-				default: this.rgb(255,255,255)
+		},
+		drone_wp_inactive	: {
+			type: 'boolean', name: 'Drone Mission Active', label: 'Drone Mission Active',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.drone_vars.wp_active == 0 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False - this background color',
-				id: 'false_bg',
-				default: this.rgb(0x52,0x45,0x45)
+		},
+
+		drone_wp_paused	: {
+			type: 'boolean', name: 'Drone Mission Paused', label: 'Drone Mission Paused',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				if (!module.exports.feedbackVars.drone_vars.wp_active) {
+					return false;
+				}
+				return module.exports.feedbackVars.drone_vars.wp_paused == 1 ? true : false;
 			},
-		]
-	};
-
-	feedbacks['onboard_rec'] = {...streams_feedback_common};
-	feedbacks['onboard_rec'].label = 'Change Button If Onboard Recording is Active';
-	feedbacks['stream_state_udp'] = {...streams_feedback_common};
-	feedbacks['stream_state_udp'].label = 'Change Button If UDP stream is Active';
-	feedbacks['stream_state_rtmp'] = {...streams_feedback_common};
-	feedbacks['stream_state_rtmp'].label = 'Change Button If RTMP stream is Active';
-	feedbacks['stream_state_srt'] = {...streams_feedback_common};
-	feedbacks['stream_state_srt'].label = 'Change Button If SRT stream is Active';
-	feedbacks['stream_state_rtp'] = {...streams_feedback_common};
-	feedbacks['stream_state_rtp'].label = 'Change Button If RTP stream is Active';
-	feedbacks['stream_state_rtsp'] = {...streams_feedback_common};
-	feedbacks['stream_state_rtsp'].label = 'Change Button If RTSP stream is Active';
-	feedbacks['stream_state_ndi'] = {...streams_feedback_common};
-	feedbacks['stream_state_ndi'].label = 'Change Button If NDI stream is Active';
-	feedbacks['stream_state_v4l2'] = {...streams_feedback_common};
-	feedbacks['stream_state_v4l2'].label = 'Change Button If V4L2 stream is Active';
-
-
-
-	let mode_feedback_common = {
-		label: 'Change Button Color If Camera Mode is Photo',
-		description: 'If yes, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'If True color',
-				id: 'true_bg',
-				default: this.rgb(0,0,255)
+		},
+		drone_wp_not_paused	: {
+			type: 'boolean', name: 'Drone Mission Not Paused', label: 'Drone Mission Not Paused',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				if (!module.exports.feedbackVars.drone_vars.wp_active) {
+					return false;
+				}
+				return module.exports.feedbackVars.drone_vars.wp_paused == 0 ? true : false;
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False color',
-				id: 'false_bg',
-				default: this.rgb(0,0,0)
+		},
+
+
+		camera_mode_photo: {
+			type: 'boolean', name: 'Camera mode PHOTO', label: 'Camera mode PHOTO',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.camera_mode == "photo";
 			},
-		]
-	};
+		},
 
-	feedbacks['camera_mode_photo'] = {...mode_feedback_common};
-	feedbacks['camera_mode_photo'].label = 'Change Button Color If Camera Mode is Photo';
-	feedbacks['camera_mode_video'] = {...mode_feedback_common};
-	feedbacks['camera_mode_video'].label = 'Change Button Color If Camera Mode is Video';
-
-
-	feedbacks['camera_rec_active'] = {
-		label: 'Change Button Color If Camera Recording is Active',
-		description: 'If yes, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'If True color',
-				id: 'true_bg',
-				default: this.rgb(255,0,0)
+		camera_mode_video: {
+			type: 'boolean', name: 'Camera mode VIDEO', label: 'Camera mode VIDEO',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.camera_mode == "video";
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False color',
-				id: 'false_bg',
-				default: this.rgb(0,0,0)
+		},
+
+		lense_mode_single: {
+			type: 'boolean', name: 'Lense mode single', label: 'Lense mode single',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.lense_mode == "1";
 			},
-		]
-	};
-
-
-	let focus_feedback_common = {
-		label: 'Change Button Color If Focus Mode is XXX',
-		description: 'If yes, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'If True color',
-				id: 'true_bg',
-				default: this.rgb(0,0,255)
+		},
+		lense_mode_360: {
+			type: 'boolean', name: 'Lense mode 360', label: 'Lense mode 360',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.lense_mode == "360";
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False color',
-				id: 'false_bg',
-				default: this.rgb(0,0,0)
+		},
+
+		camera_angle360_104: {
+			type: 'boolean', name: '360 Angle 104', label: '360 Angle 104',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.angle360 == 104;
 			},
-		]
-	};
-
-	feedbacks['camera_focus_afc'] = {...focus_feedback_common};
-	feedbacks['camera_focus_afc'].label = 'Change Button Color If Camera Focus Mode is AFC';
-	feedbacks['camera_focus_afs'] = {...focus_feedback_common};
-	feedbacks['camera_focus_afs'].label = 'Change Button Color If Camera Focus Mode is AFS';
-
-
-
-	let image_mode_feedback_common = {
-		label: 'Change Button Color If Image Mode is XXX',
-		description: 'If yes, set the button to this color',
-		options: [
-			{
-				type: 'colorpicker',
-				label: 'If True color',
-				id: 'true_bg',
-				default: this.rgb(0,0,255)
+		},
+		camera_angle360_134: {
+			type: 'boolean', name: '360 Angle 134', label: '360 Angle 134',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.angle360 == 134;
 			},
-			{
-				type: 'colorpicker',
-				label: 'If False color',
-				id: 'false_bg',
-				default: this.rgb(0,0,0)
+		},
+		camera_angle360_272: {
+			type: 'boolean', name: '360 Angle 272', label: '360 Angle 272',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.angle360 == 272;
 			},
-		]
-	};
+		},
 
-	feedbacks['camera_image_mode_auto'] = {...image_mode_feedback_common};
-	feedbacks['camera_image_mode_auto'].label = 'Change Button Color If Camera Image Mode is Auto';
-	feedbacks['camera_image_mode_manual'] = {...focus_feedback_common};
-	feedbacks['camera_image_mode_manual'].label = 'Change Button Color If Camera Image Mode is Manual';
-	feedbacks['camera_image_mode_shutter'] = {...focus_feedback_common};
-	feedbacks['camera_image_mode_shutter'].label = 'Change Button Color If Camera Image Mode is Shutter';
 
-	return feedbacks;
+
+		camera_rec_active: {
+			type: 'boolean', name: 'Camera rec active', label: 'Camera rec active',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.record_active;
+			},
+		},
+
+
+		image_mode_auto: {
+			type: 'boolean', name: 'Image mode AUTO', label: 'Camera mode AUTO',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.image_mode == "auto";
+			},
+		},
+		image_mode_manual: {
+			type: 'boolean', name: 'Image mode MANUAL', label: 'Camera mode MANUAL',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.image_mode == "manual";
+			},
+		},
+		image_mode_shutter: {
+			type: 'boolean', name: 'Image mode SHUTTER', label: 'Camera mode SHUTTER',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.image_mode == "shutter";
+			},
+		},
+
+
+		focus_type_mf: {
+			type: 'boolean', name: 'Focus type MF', label: 'Focus type MF',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.camera_focus_type == "mf";
+			},
+		},
+		focus_type_afs: {
+			type: 'boolean', name: 'Focus type AFS', label: 'Focus type AFS',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.camera_focus_type == "afs";
+			},
+		},
+		focus_type_afc: {
+			type: 'boolean', name: 'Focus type AFC', label: 'Focus type AFC',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.camera_vars.camera_focus_type == "afc";
+			},
+		},
+
+
+
+
+		onboard_rec: {
+			type: 'boolean', name: 'Onboard REC', label: 'Onboard REC',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.onboard_rec_state ? true : false;
+			},
+		},
+
+		video_paused: {
+			type: 'boolean', name: 'Video Paused', label: 'Video Paused',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.video_pause_state ? true : false;
+			},
+		},
+
+		stream_state_udp: {
+			type: 'boolean', name: 'Streaming raw UDP', label: 'Streaming raw UDP',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_udp ? true : false;
+			},
+		},
+
+		stream_state_srt: {
+			type: 'boolean', name: 'Streaming SRT', label: 'Streaming SRT',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_srt ? true : false;
+			},
+		},
+
+		stream_state_rtp: {
+			type: 'boolean', name: 'Streaming RTP', label: 'Streaming RTP',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_rtp ? true : false;
+			},
+		},
+
+		stream_state_rtsp: {
+			type: 'boolean', name: 'Streaming RTSP', label: 'Streaming RTSP',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_rtsp ? true : false;
+			},
+		},
+
+		stream_state_rtsp_client: {
+			type: 'boolean', name: 'Streaming RTSP Client', label: 'Streaming RTSP Client',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_rtsp_client ? true : false;
+			},
+		},
+
+		stream_state_ndi: {
+			type: 'boolean', name: 'Streaming NDI', label: 'Streaming NDI',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_ndi ? true : false;
+			},
+		},
+
+		stream_state_v4l2: {
+			type: 'boolean', name: 'Streaming V4L2', label: 'Streaming V4L2',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_v4l2 ? true : false;
+			},
+		},
+
+		stream_state_dvbt: {
+			type: 'boolean', name: 'Streaming DVB-T', label: 'Streaming DVB-T',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_dvbt ? true : false;
+			},
+		},
+
+		stream_state_ndihx: {
+			type: 'boolean', name: 'Streaming NDI HX', label: 'Streaming NDI HX',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_ndihx ? true : false;
+			},
+		},
+
+		stream_state_mpegts: {
+			type: 'boolean', name: 'Streaming MPEG-TS', label: 'Streaming MPEG-TS',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_mpegts ? true : false;
+			},
+		},
+
+		stream_state_hls: {
+			type: 'boolean', name: 'Streaming HLS', label: 'Streaming HLS',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_hls ? true : false;
+			},
+		},
+
+
+		stream_state_rtmp_custom1: {
+			type: 'boolean', name: 'Streaming RTMP Custom1', label: 'Streaming RTMP Custom1',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_rtmp_custom1 ? true : false;
+			},
+		},
+		stream_state_rtmp_custom2: {
+			type: 'boolean', name: 'Streaming RTMP Custom2', label: 'Streaming RTMP Custom2',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_rtmp_custom2 ? true : false;
+			},
+		},
+		stream_state_rtmp_youtube: {
+			type: 'boolean', name: 'Streaming RTMP Youtube', label: 'Streaming RTMP Youtube',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_rtmp_youtube ? true : false;
+			},
+		},
+		stream_state_rtmp_insta: {
+			type: 'boolean', name: 'Streaming RTMP Instagram', label: 'Streaming RTMP Instagram',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_rtmp_insta ? true : false;
+			},
+		},
+		stream_state_rtmp_facebook: {
+			type: 'boolean', name: 'Streaming RTMP Facebook', label: 'Streaming RTMP Facebook',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_rtmp_facebook ? true : false;
+			},
+		},
+		stream_state_rtmp_tiktok: {
+			type: 'boolean', name: 'Streaming RTMP TikTok', label: 'Streaming RTMP TikTok',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.stream_state_rtmp_tiktok ? true : false;
+			},
+		},
+
+
+		feedback_display_smooth_enabled: {
+			type: 'boolean', name: 'Display Smooth Enabled', label: 'Display Smooth Enabled',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.app_vars.display_smooth_enabled == 1 ? true : false;
+			},
+		},
+		feedback_display_smooth_disabled: {
+			type: 'boolean', name: 'Display Smooth Disabled', label: 'Display Smooth Disabled',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.app_vars.display_smooth_enabled == 0 ? true : false;
+			},
+		},
+
+
+		feedback_video_intro_enabled: {
+			type: 'boolean', name: 'Video Intro Enabled', label: 'Video Intro Enabled',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.app_vars.video_intro_enabled == 1 ? true : false;
+			},
+		},
+		feedback_video_intro_disabled: {
+			type: 'boolean', name: 'Video Intro Enabled', label: 'Video Intro Enabled',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.app_vars.video_intro_enabled == 0 ? true : false;
+			},
+		},
+
+		feedback_bgaudio_enabled: {
+			type: 'boolean', name: 'Background Audio Enabled', label: 'Background Audio Enabled',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.app_vars.bgaudio_enabled == 1 ? true : false;
+			},
+		},
+		feedback_bgaudio_disabled: {
+			type: 'boolean', name: 'Background Audio Disabled', label: 'Background Audio Disabled',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.app_vars.bgaudio_enabled == 0 ? true : false;
+			},
+		},
+
+
+		feedback_secondary_camera_enabled: {
+			type: 'boolean', name: 'Secondary Camera Enabled', label: 'Secondary Camera Enabled',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.app_vars.app2_enabled == 1 ? true : false;
+			},
+		},
+		feedback_secondary_camera_disabled: {
+			type: 'boolean', name: 'Secondary Camera Disabled', label: 'Secondary Camera Disabled',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.app_vars.app2_enabled == 0 ? true : false;
+			},
+		},
+
+
+
+		feedback_motor_focus_ready: {
+			type: 'boolean', name: 'Motor Focus Found', label: 'Motor Focus Found',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.gimbal_vars.motor_focus_ready == 1 ? true : false;
+			},
+		},
+		feedback_motor_iris_ready: {
+			type: 'boolean', name: 'Motor IRIS Found', label: 'Motor IRIS Found',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.gimbal_vars.motor_iris_ready == 1 ? true : false;
+			},
+		},
+		feedback_motor_zoom_ready: {
+			type: 'boolean', name: 'Motor Zoom Found', label: 'Motor Zoom Found',
+			defaultStyle: { bgcolor: ColorGreen, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.gimbal_vars.motor_zoom_ready == 1 ? true : false;
+			},
+		},
+
+
+		feedback_gimbal_orientation_lock: {
+			type: 'boolean', name: 'Gimbal Orientation Lock state', label: 'Gimbal Orientation Lock state',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.gimbal_vars.orientation_lock == 1 ? true : false;
+			},
+		},
+		feedback_gimbal_orientation_unlock: {
+			type: 'boolean', name: 'Gimbal Orientation Unlock state', label: 'Gimbal Orientation Unlock state',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				return module.exports.feedbackVars.gimbal_vars.orientation_lock == 1 ? false : true;
+			},
+		},
+
+	}
+
+
+	/// Add link channels
+	feedbackList['link_channel_auto'] = {
+			type: 'boolean', name: 'Link Channel Auto', label: 'Link Channel Auto',
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				if (module.exports.feedbackVars.link_vars.auto_channel) return true;
+				//return module.exports.feedbackVars.link_vars.auto_channel ? true : false;
+			}
+	}
+
+	for (var i = 1; i <= 32; i++) {
+		feedbackList['link_channel_' + i] = {
+			type: 'boolean', name: 'Link Channel ' + i, label: 'Link Channel ' + i,
+			defaultStyle: { bgcolor: ColorRed, color: ColorWhite },
+			callback: (feedback) => {
+				if (module.exports.feedbackVars.link_vars.auto_channel) return false;
+				var id = feedback.feedbackId.replace('link_channel_', '');
+				return module.exports.feedbackVars.link_vars.current_channel == id ? true : false;
+			},
+		}
+	}
+
+
+
+	self.setFeedbackDefinitions(feedbackList);
+}
+
+
+module.exports.feedbackVars = {
+	app_vars: {},
+	camera_vars: {},
+	drone_vars: {},
+	link_vars: {},
+	gimbal_vars: {},
+}
+
+
+module.exports.clear = async function (self) {
+
+	module.exports.feedbackVars.app_vars = {}
+	module.exports.feedbackVars.camera_vars = {}
+	module.exports.feedbackVars.drone_vars = {}
+	module.exports.feedbackVars.link_vars = {}
+
+	//self.log('info', 'Clear all feedback vars');
+
+	for (var name in feedbackList) {
+		self.checkFeedbacks(name);
+	}
 }

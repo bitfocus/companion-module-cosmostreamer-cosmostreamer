@@ -1,31 +1,28 @@
 {
-	"name": "cosmostreamer",
-	"version": "0.0.1",
-	"api_version": "1.0.0",
-	"description": "Cosmostreamer module",
-	"keywords": [
-		"Cosmostreamer",
-		"DJI",
-		"Pocket Osmo",
-		"Pocket2",
-		"Osmo",
-		"Ronin",
-		"Wiral"
-	],
-	"manufacturer": "Cosmostreamer",
-	"product": "Cosmostreamer",
-	"shortname": "cosmostreamer",
-	"homepage": "https://github.com/bitfocus/companion-module-cosmostreamer-cosmostreamer",
-	"main": "index.js",
+	"name": "companion-module-cosmostreamer-cosmostreamer",
+	"version": "0.24.6",
+	"main": "main.js",
+	"scripts": {
+		"format": "prettier -w .",
+		"package": "companion-module-build"
+	},
+	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/bitfocus/companion-module-cosmostreamer-cosmostreamer.git"
 	},
-	"author": "Sergey Gol <cosmostreamer@gmail.com>",
-	"contributors": [
-	],
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/bitfocus/companion-module-cosmostreamer-cosmostreamer/issues"
-	}
+	"engines": {
+		"node": "^22.20",
+		"yarn": "^4"
+	},
+	"dependencies": {
+		"@companion-module/base": "~1.12.0"
+	},
+	"devDependencies": {
+		"@companion-module/tools": "^2.1.0",
+		"eslint": "^9.36.0",
+		"prettier": "^3.3.3"
+	},
+	"prettier": "@companion-module/tools/.prettierrc.json",
+	"packageManager": "yarn@4.12.0"
 }

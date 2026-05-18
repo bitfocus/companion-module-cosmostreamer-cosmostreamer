@@ -1,0 +1,28 @@
+{
+	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
+	"type": "connection",
+	"id": "companion-module-cosmostreamer-cosmostreamer",
+	"name": "companion-module-cosmostreamer-cosmostreamer",
+	"shortname": "Cosmostreamer NG",
+	"description": "Cosmostreamer module",
+	"version": "0.24.6",
+	"license": "MIT",
+	"repository": "git+https://github.com/bitfocus/companion-module-cosmostreamer-cosmostreamer.git",
+	"bugs": "https://github.com/bitfocus/companion-module-cosmostreamer-cosmostreamer/issues",
+	"maintainers": [
+		{
+			"name": "Gol",
+			"email": "cosmostreamer@gmail.com"
+		}
+	],
+	"runtime": {
+		"type": "node22",
+		"api": "nodejs-ipc",
+		"apiVersion": "0.0.0",
+		"entrypoint": "../main.js"
+	},
+	"legacyIds": [],
+	"manufacturer": "Cosmostreamer",
+	"products": ["Cosmostreamer NG"],
+	"keywords": []
+}

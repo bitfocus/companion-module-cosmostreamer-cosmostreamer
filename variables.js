@@ -1,79 +1,136 @@
-exports.getVariables  = function() {
+let varList = []
 
-	var variables = [];
-		
-	variables.push({ name: 'cs_state', label: 'cs_state' });
+module.exports = function (self) {
+	varList = [
+		{ variableId: 'cs_state', name: 'cs_state' },
+		{ variableId: 'camera_model', name: 'camera_model' },
 
-	variables.push({ name: 'camera_rec_time', label: 'camera_rec_time' });
+		{ variableId: 'camera_pan', name: 'camera_pan' },
+		{ variableId: 'camera_tilt', name: 'camera_tilt' },
+		{ variableId: 'camera_roll', name: 'camera_roll' },
+		{ variableId: 'camera_pan_rel', name: 'camera_pan_rel' },
+		{ variableId: 'camera_tilt_rel', name: 'camera_tilt_rel' },
+		{ variableId: 'camera_roll_rel', name: 'camera_roll_rel' },
 
-	variables.push({ name: 'onboard_rec_time', label: 'onboard_rec_time' });
-	variables.push({ name: 'rtmp_time', label: 'rtmp_time' });
-	variables.push({ name: 'rtsp_time', label: 'rtsp_time' });
-	variables.push({ name: 'srt_time', label: 'srt_time' });
+		{ variableId: 'camera_focus_type', name: 'camera_focus_type' },
+		{ variableId: 'camera_dzoom', name: 'camera_dzoom' },
 
-	variables.push({ name: 'am_state', label: 'am_state' });
-	variables.push({ name: 'am_position', label: 'am_current_position' });
-	variables.push({ name: 'am_total', label: 'am_total_positions' });
-	variables.push({ name: 'am_nearest', label: 'am_nearest_position' });
-	variables.push({ name: 'orientation_lock', label: 'orientation_lock' });
-	variables.push({ name: 'gimbal_pan', label: 'gimbal_pan' });
-	variables.push({ name: 'gimbal_tilt', label: 'gimbal_tilt' });
-	variables.push({ name: 'gimbal_roll', label: 'gimbal_roll' });
-	variables.push({ name: 'digital_zoom', label: 'digital_zoom' });
-	variables.push({ name: 'camera_image_mode', label: 'camera_image_mode' });
-	variables.push({ name: 'camera_shutter', label: 'camera_shutter' });
-	variables.push({ name: 'camera_iso', label: 'camera_iso' });
-	variables.push({ name: 'camera_ev', label: 'camera_ev' });
-	variables.push({ name: 'camera_wb', label: 'camera_wb' });
-	variables.push({ name: 'camera_color', label: 'camera_color' });
+		{ variableId: '360angle', name: '360angle' },
 
-	variables.push({ name: 'wiral_status', label: 'wiral_status' });
-	variables.push({ name: 'wiral_distance', label: 'wiral_distance' });
-	variables.push({ name: 'wiral_max_distance', label: 'wiral_max_distance' });
-	variables.push({ name: 'wiral_speed', label: 'wiral_speed' });
-	variables.push({ name: 'wiral_tictac', label: 'wiral_tictac' });
-	variables.push({ name: 'wiral_tictac_counter', label: 'wiral_tictac_counter' });
-	variables.push({ name: 'wiral_tictac_tick_time', label: 'wiral_tictac_tick_time' });
-	variables.push({ name: 'wiral_tictac_prev_tick_time', label: 'wiral_tictac_prev_tick_time' });
-	variables.push({ name: 'wiral_battery_level', label: 'wiral_battery_level' });
-	variables.push({ name: 'wiral_last_set_speed', label: 'wiral_last_set_speed' });
+		{ variableId: 'camera_image_mode', name: 'camera_image_mode' },
+		{ variableId: 'camera_ev', name: 'camera_ev' },
+		{ variableId: 'camera_ev_set_rotary', name: 'camera_ev_set_rotary' },
+		{ variableId: 'camera_iso', name: 'camera_iso' },
+		{ variableId: 'camera_iso_set', name: 'camera_iso_set' },
+		{ variableId: 'camera_iso_set_rotary', name: 'camera_iso_set_rotary' },
+		{ variableId: 'camera_aperture', name: 'camera_aperture' },
+		{ variableId: 'camera_shutter', name: 'camera_shutter' },
+		{ variableId: 'camera_shutter_set', name: 'camera_shutter_set' },
+		{ variableId: 'camera_shutter_set_rotary', name: 'camera_shutter_set_rotary' },
+		{ variableId: 'camera_wb', name: 'camera_wb' },
+		{ variableId: 'camera_wb_temp', name: 'camera_wb_temp' },
+		{ variableId: 'camera_wb_set_rotary', name: 'camera_wb_set_rotary' },
+		{ variableId: 'camera_sd_free', name: 'camera_sd_free' },
+		{ variableId: 'camera_battery_level', name: 'camera_battery_level' },
+		{ variableId: 'goggles_battery_level', name: 'goggles_battery_level' },
+		{ variableId: 'rc_battery_level', name: 'rc_battery_level' },
 
-	this.setVariable('cs_state', '');
 
-	this.setVariable('camera_rec_time', '');
 
-	this.setVariable('onboard_rec_time', '');
-	this.setVariable('rtmp_time', '');
-	this.setVariable('rtsp_time', '');
-	this.setVariable('srt_time', '');
+		{ variableId: 'rec_label', name: 'rec_label' },
+		{ variableId: 'rec_time', name: 'rec_time' },
 
-	this.setVariable('am_state', '');
-	this.setVariable('am_position', 0);
-	this.setVariable('am_total', 0);
-	this.setVariable('am_nearest', 0);
-	this.setVariable('orientation_lock', 0);
-	this.setVariable('gimbal_pan', 0);
-	this.setVariable('gimbal_tilt', 0);
-	this.setVariable('gimbal_roll', 0);
-	this.setVariable('digital_zoom', '');
-	this.setVariable('camera_image_mode', '');
+		{ variableId: 'onboard_rec_time', name: 'onboard_rec_time' },
+		{ variableId: 'srt_time', name: 'srt_time' },
+		{ variableId: 'rtsp_time', name: 'rtsp_time' },
+		{ variableId: 'hls_time', name: 'hls_time' },
+		{ variableId: 'rtmp_time_custom1', name: 'rtmp_time_custom1' },
+		{ variableId: 'rtmp_time_custom2', name: 'rtmp_time_custom2' },
+		{ variableId: 'rtmp_time_youtube', name: 'rtmp_time_youtube' },
+		{ variableId: 'rtmp_time_insta', name: 'rtmp_time_insta' },
+		{ variableId: 'rtmp_time_facebook', name: 'rtmp_time_facebook' },
+		{ variableId: 'rtmp_time_tiktok', name: 'rtmp_time_tiktok' },
 
-	this.setVariable('camera_shutter', '');
-	this.setVariable('camera_iso', '');
-	this.setVariable('camera_ev', '');
-	this.setVariable('camera_wb', '');
-	this.setVariable('camera_color', '');
+		{ variableId: 'home_distance', name: 'home_distance' },
+		{ variableId: 'altitude', name: 'altitude' },
+		{ variableId: 'altitude_sonar', name: 'altitude_sonar' },
+		{ variableId: 'drone_yaw', name: 'drone_yaw' },
+		{ variableId: 'drone_pitch', name: 'drone_pitch' },
+		{ variableId: 'drone_roll', name: 'drone_roll' },
+		{ variableId: 'drone_hspeed', name: 'drone_hspeed' },
+		{ variableId: 'drone_vspeed', name: 'drone_vspeed' },
 
-	this.setVariable('wiral_status', 'not connected');
-	this.setVariable('wiral_distance', '');
-	this.setVariable('wiral_max_distance', '');
-	this.setVariable('wiral_speed', '');
-	this.setVariable('wiral_tictac', '');
-	this.setVariable('wiral_tictac_counter', '');
-	this.setVariable('wiral_tictac_tick_time', '');
-	this.setVariable('wiral_tictac_prev_tick_time', '');
-	this.setVariable('wiral_battery_level', '');
-	this.setVariable('wiral_last_set_speed', '');
+		{ variableId: 'drone_flight_mode', name: 'drone_flight_mode' },
+		{ variableId: 'drone_in_flight', name: 'drone_in_flight' },
+		{ variableId: 'drone_in_landing', name: 'drone_in_landing' },
+		{ variableId: 'drone_in_rth', name: 'drone_in_rth' },
 
-	return variables;
+		{ variableId: 'drone_rssi_video', name: 'drone_rssi_video' },
+		{ variableId: 'drone_rssi_rc', name: 'drone_rssi_rc' },
+
+		{ variableId: 'drone_flight_time_estimated', name: 'drone_flight_time_estimated' },
+
+		{ variableId: 'drone_obstacle_cam_id', name: 'drone_obstacle_cam_id' },
+
+		{ variableId: 'mission_name', name: 'mission_name' },
+		{ variableId: 'mission_point', name: 'mission_point' },
+		{ variableId: 'mission_point_total', name: 'mission_point_total' },
+		{ variableId: 'mission_distance', name: 'mission_distance' },
+		{ variableId: 'mission_distance_total', name: 'mission_distance_total' },
+		{ variableId: 'mission_time', name: 'mission_time' },
+		{ variableId: 'mission_time_total', name: 'mission_time_total' },
+
+
+		{ variableId: 'link_rssi_rx', name: 'link_rssi_rx' },
+		{ variableId: 'link_rssi_tx', name: 'link_rssi_tx' },
+		{ variableId: 'link_auto_channel', name: 'link_auto_channel' },
+		{ variableId: 'link_current_channel', name: 'link_current_channel' },
+		{ variableId: 'link_current_channel_freq', name: 'link_current_channel_freq' },
+
+		{ variableId: 'link_tx_ok', name: 'link_tx_ok' },
+		{ variableId: 'link_gimbal_ok', name: 'link_gimbal_ok' },
+		{ variableId: 'link_camera_ok', name: 'link_camera_ok' },
+
+		{ variableId: 'gimbal_speed_pan', name: 'gimbal_speed_pan' },
+		{ variableId: 'gimbal_speed_tilt', name: 'gimbal_speed_tilt' },
+		{ variableId: 'gimbal_speed_roll', name: 'gimbal_speed_roll' },
+
+		{ variableId: 'gimbal_smooth_pan', name: 'gimbal_speed_pan' },
+		{ variableId: 'gimbal_smooth_tilt', name: 'gimbal_smooth_tilt' },
+		{ variableId: 'gimbal_smooth_roll', name: 'gimbal_smooth_roll' },
+
+
+		{ variableId: 'motor_focus_status', name: 'motor_focus_status' },
+		{ variableId: 'motor_focus_percentage', name: 'motor_focus_percentage' },
+		{ variableId: 'motor_iris_status', name: 'motor_iris_status' },
+		{ variableId: 'motor_iris_percentage', name: 'motor_iris_percentage' },
+		{ variableId: 'motor_zoom_status', name: 'motor_zoom_status' },
+		{ variableId: 'motor_zoom_percentage', name: 'motor_zoom_percentage' },
+
+	]
+
+
+	/// Add vars for link channels frequencies and noises
+	for (var i = 1; i < 32; i++) {
+		let new_item = { variableId: 'link_channel_' + i + '_freq', name: 'link_channel_' + i + '_freq' }
+		varList.push(new_item);
+
+		let new_item2 = { variableId: 'link_channel_' + i + '_level', name: 'link_channel_' + i + '_level' }
+		varList.push(new_item2);
+	}
+
+
+	self.setVariableDefinitions(varList);
+}
+
+module.exports.clear = function(self) {
+	self.log('info', 'Clear all variables');
+
+	for (var i in varList) {
+		var item_name = varList[i]['variableId'];
+		var new_item = {}
+		new_item[item_name] = '';
+		self.setVariableValues(new_item);
+		//self.log('info', 'Clear variable ' + item_name);
+	}
 }
